@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Conda
+.conda/
+
+# Data
+data/raw/
+data/processed/*.csv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac
+.DS_Store
+
