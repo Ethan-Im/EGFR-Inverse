@@ -121,7 +121,7 @@ EGFR-Inverse/
 ## Quick Start
 
 ```bash
-git clone https://github.com/Ethan-Im/EGFR-Inverse.git
+git clone https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse.git
 cd EGFR-Inverse
 conda create -n egfr-inverse python=3.10 -y
 conda activate egfr-inverse
