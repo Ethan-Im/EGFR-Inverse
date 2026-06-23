@@ -133,7 +133,7 @@ def show_candidate_grid(df, n=6):
     if df.empty:
         return None
     smiles_list = df["SMILES"].tolist()[:n]
-    mols = [Chem.MolFromSmiles(s) for s in smiles_list if Chem.MolFromSmiles(s)]
+    mols = [m for m in [Chem.MolFromSmiles(s) for s in smiles_list] if m is not None]
     if not mols:
         return None
     img = Draw.MolsToGridImage(mols, molsPerRow=3, subImgSize=(300,250),
@@ -181,7 +181,7 @@ AttentiveFP GNN trained on ChEMBL203 | Wild-type: Test R=0.74 | T790M (+pseudo):
         with gr.Tab("💊 WT Candidates"):
             gr.Markdown("### 16 Novel Wild-type EGFR Inhibitor Candidates\nGenerated via Genetic Algorithm (pChEMBL > 10.0, SA <= 4.0, QED >= 0.4, Lipinski-compliant)")
             wt_df = get_wt_candidates()
-            gr.Dataframe(value=wt_df, label="Candidates")
+            gr.Dataframe(value=wt_df.values.tolist(), headers=wt_df.columns.tolist(), label="Candidates")
             wt_grid = show_candidate_grid(wt_df)
             if wt_grid:
                 gr.Image(value=wt_grid, label="Top 6 Structures", type="pil")
@@ -190,10 +190,10 @@ AttentiveFP GNN trained on ChEMBL203 | Wild-type: Test R=0.74 | T790M (+pseudo):
         with gr.Tab("🧬 T790M Candidates"):
             gr.Markdown("### 13 Novel T790M-targeted Candidates\nGenerated via GA using pseudo-labeled T790M model (R=0.70). Note: acrylamide warhead emerged naturally from training data, consistent with known 3rd-gen EGFR-TKI covalent binding mechanism.")
             mt_df = get_t790m_candidates()
-            gr.Dataframe(value=mt_df, label="Candidates")
+            gr.Dataframe(value=mt_df.values.tolist(), headers=mt_df.columns.tolist(), label="Candidates")
             mt_grid = show_candidate_grid(mt_df)
             if mt_grid:
                 gr.Image(value=mt_grid, label="Top 6 Structures", type="pil")
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(share=True)

@@ -1,10 +1,1 @@
-torch
-torch-geometric
-torch-scatter
-torch-sparse
-rdkit
-pandas
-numpy
-scipy
-streamlit
-gradio
+# managed by Dockerfile
