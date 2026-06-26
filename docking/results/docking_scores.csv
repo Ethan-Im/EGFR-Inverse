@@ -1,0 +1,11 @@
+ligand,receptor,vina_score_kcal_mol
+wt_cand_01,wt,-8.078
+wt_cand_02,wt,-7.593
+wt_cand_03,wt,-7.929
+wt_cand_04,wt,-8.124
+wt_cand_05,wt,-8.098
+t790m_cand_01,t790m,-7.601
+t790m_cand_02,t790m,-8.155
+t790m_cand_03,t790m,-7.899
+t790m_cand_04,t790m,-8.31
+t790m_cand_05,t790m,-7.907
