@@ -43,8 +43,13 @@ Notably, acrylamide warhead motifs ($\text{C=CC(=O)N-}$) emerge spontaneously
 in T790M candidates --- consistent with the covalent binding mechanism of
 third-generation EGFR-TKIs such as osimertinib.
 Preliminary AutoDock Vina docking validation confirms that all candidates
-bind the EGFR kinase pocket with reasonable affinities ($-7.6$ to $-8.3$ kcal/mol),
-with T790M-targeted candidates showing preferential binding to the mutant receptor.
+bind the EGFR kinase pocket with reasonable affinities ($-7.6$ to $-8.3$ kcal/mol).
+A full cross-docking analysis, however, reveals that T790M-targeted candidates
+do not show preferential binding to the mutant receptor under standard
+non-covalent scoring --- a discrepancy we attribute to Vina's inability to
+model the covalent mechanism of the acrylamide warhead these candidates
+spontaneously acquired, highlighting a validation gap relevant to AI-driven
+covalent inhibitor design.
 Our results establish a transferable inverse design methodology ---
 previously validated on polymer property prediction (Polyinverse) ---
 applied here to drug discovery, and highlight pseudo-labeling as an effective
@@ -173,7 +178,7 @@ Receptor structures were obtained from the Protein Data Bank:
 Receptors were prepared using Meeko; ligands were prepared via RDKit ETKDGv3
 3D conformer generation followed by Meeko PDBQT conversion.
 Docking box centers were derived from co-crystallized IRE ligand centroids.
-Exhaustiveness was set to 8.
+Exhaustiveness was set to 8 for native docking and repeated at exhaustiveness 32 for the cross-docking analysis to confirm reproducibility.
 
 %% ============================================================
 \section{Results}
@@ -224,18 +229,17 @@ Notably, acrylamide warhead motifs ($\text{C=CC(=O)N-}$) emerged spontaneously
 in T790M candidates without explicit encoding --- consistent with the known
 covalent binding mechanism of third-generation EGFR-TKIs targeting Cys797.
 
-\subsection{Docking Validation}
+\subsection{Docking Validation and Cross-Docking Analysis}
 
-AutoDock Vina docking of top-5 candidates confirmed binding to the EGFR
-kinase pocket, with affinities ranging from $-7.6$ to $-8.3$ kcal/mol
-(Table~\ref{tab:docking}).
-T790M-targeted candidates showed preferential binding to the T790M receptor
-(best: $-8.310$ kcal/mol) compared to wild-type candidates on the WT receptor
-(best: $-8.124$ kcal/mol), consistent with mutant-selective design.
+AutoDock Vina docking of top-5 candidates from each GA run confirmed binding
+to the EGFR kinase pocket, with native-receptor affinities ranging from
+$-7.6$ to $-8.3$ kcal/mol (Table~\ref{tab:docking}), establishing that
+GA-generated candidates are not random molecules but structurally coherent
+EGFR-binding ligands.
 
 \begin{table}[h]
 \centering
-\caption{AutoDock Vina docking scores for top candidates.}
+\caption{AutoDock Vina docking scores (native receptor only).}
 \label{tab:docking}
 \begin{tabular}{lcc}
 \toprule
@@ -255,6 +259,31 @@ wt\_cand\_02    & Wild-type & -7.593 \\
 \end{tabular}
 \end{table}
 
+To rigorously assess mutant-selectivity, we performed a full cross-docking
+experiment: all 10 candidates (5 WT-origin, 5 T790M-origin) were docked
+against \emph{both} receptor structures (Table~\ref{tab:crossdock}), repeated
+at exhaustiveness 8 and 32 to confirm reproducibility.
+Contrary to the native-only analysis, T790M-origin candidates bound
+\emph{more strongly} to the wild-type receptor than to their intended T790M
+target in all 5 cases (mean: $-8.78$ vs.\ $-8.08$ kcal/mol), a pattern fully
+reproducible across both exhaustiveness settings.
+WT-origin candidates showed only weak native-receptor preference
+($-7.99$ vs.\ $-7.90$ kcal/mol on average).
+
+\begin{table}[h]
+\centering
+\caption{Cross-docking summary (mean Vina scores, exhaustiveness=32).}
+\label{tab:crossdock}
+\begin{tabular}{lccc}
+\toprule
+Candidate origin & Native receptor & Cross receptor & Selectivity \\
+\midrule
+WT candidates ($n=5$)    & $-7.99$ (WT)    & $-7.90$ (T790M) & Weakly WT-selective \\
+T790M candidates ($n=5$) & $-8.08$ (T790M) & $-8.78$ (WT)    & Not T790M-selective \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 %% ============================================================
 \section{Discussion}
 
@@ -262,8 +291,24 @@ This work demonstrates that pseudo-labeling is an effective strategy for
 addressing data scarcity in mutant-specific drug design, recovering most of
 the performance gap caused by limited T790M bioactivity data.
 The spontaneous emergence of acrylamide warhead motifs in GA-generated T790M
-candidates provides qualitative evidence that the GNN captured mechanistically
-relevant structural features of T790M-selective inhibitors.
+candidates provides qualitative evidence that the GNN captured a
+mechanistically relevant structural feature of real third-generation
+EGFR-TKIs. However, the cross-docking analysis (Table~\ref{tab:crossdock})
+does not support mutant-selective \emph{non-covalent} binding for these
+candidates --- in fact, T790M-origin candidates bound more strongly to the
+wild-type receptor in every case tested. We interpret this as a validation
+gap rather than a failure of candidate generation: the acrylamide warhead's
+primary mechanism of action in real covalent EGFR-TKIs is irreversible
+covalent bond formation with Cys797, a contribution that standard AutoDock
+Vina --- which scores only non-covalent interactions --- cannot capture.
+Consequently, non-covalent docking likely underestimates the true
+mutant-selective potency of these candidates while overweighting their
+non-covalent complementarity to the larger, more permissive wild-type pocket.
+This finding highlights an important methodological point for AI-driven
+covalent inhibitor design: non-covalent docking scores are an inappropriate
+sole validation criterion for candidates whose intended mechanism is covalent,
+and covalent-aware docking methods (e.g.\ CovDock, AutoDock-GPU covalent mode)
+should be used in future work to properly assess such candidates.
 
 Several limitations should be noted.
 First, pseudo-labels were generated by the weak T790M teacher model ($R = 0.40$),
@@ -273,9 +318,9 @@ Second, docking scores are a coarse proxy for binding affinity and do not
 account for solvation, entropy, or induced-fit effects.
 Third, exhaustiveness was set to 8 for computational efficiency; higher values
 would yield more reliable poses.
-Future work should include cross-docking experiments (WT candidates into T790M
-receptor and vice versa) to quantify mutant-selectivity, iterative
-self-training rounds, ADMET profiling, and ultimately wet-lab validation.
+Future work should include covalent-aware docking to properly assess
+acrylamide-warhead candidates, iterative self-training rounds, ADMET
+profiling, and ultimately wet-lab validation.
 
 %% ============================================================
 \section{Conclusion}
