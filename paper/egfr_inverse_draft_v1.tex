@@ -229,6 +229,50 @@ Notably, acrylamide warhead motifs ($\text{C=CC(=O)N-}$) emerged spontaneously
 in T790M candidates without explicit encoding --- consistent with the known
 covalent binding mechanism of third-generation EGFR-TKIs targeting Cys797.
 
+
+\subsection{ADMET Profiling}
+
+All 29 GA-generated candidates (16 WT-origin, 13 T790M-origin) were profiled
+across five ADMET endpoints using Random Forest models trained on TDC benchmarks:
+intestinal absorption (Caco-2), cardiac toxicity (hERG), liver toxicity (DILI),
+metabolic stability (CYP3A4 substrate), and blood-brain barrier penetration (BBB).
+Model validation performance was: Caco-2 MAE=0.361, hERG AUC=0.805,
+DILI AUC=0.869, CYP3A4 AUC=0.651, BBB AUC=0.867 on held-out test sets.
+
+No candidate passed all three primary safety filters simultaneously
+(Caco-2 $> -5.15$ log cm/s, hERG $< 0.5$, DILI $< 0.5$).
+All candidates showed elevated hERG (mean: 0.724) and DILI (mean: 0.721)
+risk scores, consistent with the known tendency of kinase inhibitor scaffolds
+to exhibit off-target interactions with cardiac ion channels and hepatic
+metabolic pathways. Caco-2 absorption predictions were in the moderate range
+(mean: 569XZilms4.877$ log cm/s), and BBB penetration was predicted as high
+for most candidates (mean: 0.731) --- which is undesirable for a lung cancer
+therapeutic. These results highlight the need for explicit multi-objective
+optimization incorporating ADMET constraints in future GA design, rather than
+post-hoc filtering of affinity-optimized candidates.
+
+
+\subsection{ADMET Profiling}
+
+All 29 GA-generated candidates (16 WT-origin, 13 T790M-origin) were profiled
+across five ADMET endpoints using Random Forest models trained on TDC benchmarks:
+intestinal absorption (Caco-2), cardiac toxicity (hERG), liver toxicity (DILI),
+metabolic stability (CYP3A4 substrate), and blood-brain barrier penetration (BBB).
+Model validation performance was: Caco-2 MAE=0.361, hERG AUC=0.805,
+DILI AUC=0.869, CYP3A4 AUC=0.651, BBB AUC=0.867 on held-out test sets.
+
+No candidate passed all three primary safety filters simultaneously
+(Caco-2 $> -5.15$ log cm/s, hERG $< 0.5$, DILI $< 0.5$).
+All candidates showed elevated hERG (mean: 0.724) and DILI (mean: 0.721)
+risk scores, consistent with the known tendency of kinase inhibitor scaffolds
+to exhibit off-target interactions with cardiac ion channels and hepatic
+metabolic pathways. Caco-2 absorption predictions were in the moderate range
+(mean: 569XZilms4.877$ log cm/s), and BBB penetration was predicted as high
+for most candidates (mean: 0.731) --- which is undesirable for a lung cancer
+therapeutic. These results highlight the need for explicit multi-objective
+optimization incorporating ADMET constraints in future GA design, rather than
+post-hoc filtering of affinity-optimized candidates.
+
 \subsection{Docking Validation and Cross-Docking Analysis}
 
 AutoDock Vina docking of top-5 candidates from each GA run confirmed binding
