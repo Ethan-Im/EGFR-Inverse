@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.4)  2 JUL 2026 15:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.4)  3 JUL 2026 10:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -382,45 +382,41 @@ Package hyperref Info: Link coloring OFF on input line 18.
 \@outlinefile=\write3
 \openout3 = `egfr_inverse_draft_v1.out'.
 
- [1
-
-{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3{
-/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.253 
-      
-? 
-! Interruption.
-<to be read again> 
-                   \tex_par:D 
-l.253 
-      
-? 
-
-Overfull \hbox (204.5965pt too wide) in paragraph at lines 242--253
-\OT1/cmr/m/n/10.95 pre-dic-tions were in the mod-er-ate range (mean: 569XZilms4
-.877$\OML/cmm/m/it/10.95 logcm=s\OT1/cmr/m/n/10.95 )\OML/cmm/m/it/10.95 ; andBB
-Bpenetrationwaspredictedashighformostcandidates\OT1/cmr/m/n/10.95 (\OML/cmm/m/i
-t/10.95 mean \OT1/cmr/m/n/10.95 :
- []
 
 
-Overfull \hbox (50.10272pt too wide) in paragraph at lines 242--253
-\OT1/cmr/m/n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 731) \OMS/cmsy/m/n/
-10.95 ^^@ ^^@ ^^@ \OML/cmm/m/it/10.95 whichisundesirableforalungcancertherapeut
-ic:Theseresultshighlighttheneedforexplicitmulti \OMS/cmsy/m/n/10.95 ^^@
- []
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[1
+
+{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2] [3{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1
+.enc}]
+<figures/fig2_scatter.pdf, id=124, 1004.33151pt x 334.76318pt>
+File: figures/fig2_scatter.pdf Graphic file (type pdf)
+<use figures/fig2_scatter.pdf>
+Package pdftex.def Info: figures/fig2_scatter.pdf  used on input line 231.
+(pdftex.def)             Requested size: 469.75502pt x 156.5776pt.
 
 
-Overfull \hbox (109.70717pt too wide) in paragraph at lines 242--253
-\OML/cmm/m/it/10.95 objectiveoptimizationincorporatingADMETconstraintsinfutureG
-Adesign; ratherthanpost \OMS/cmsy/m/n/10.95 ^^@ \OML/cmm/m/it/10.95 hocfilterin
-gofaffinity \OMS/cmsy/m/n/10.95 ^^@
- []
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4] [5] [6] [7] (./egfr_inverse_draft_v1.aux)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4]
+<figures/fig3_candidates.pdf, id=134, 1149.09305pt x 840.67163pt>
+File: figures/fig3_candidates.pdf Graphic file (type pdf)
+<use figures/fig3_candidates.pdf>
+Package pdftex.def Info: figures/fig3_candidates.pdf  used on input line 285.
+(pdftex.def)             Requested size: 469.75502pt x 343.67705pt.
+ [5 <./figures/fig2_scatter.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6 <./figures/fig3_candidates.pdf>] [7] [8] (./egfr_inverse_draft_v1.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -429,13 +425,13 @@ Package rerunfilecheck Info: File `egfr_inverse_draft_v1.out' has not changed.
 (rerunfilecheck)             Checksum: B60BCCDDEC12A3CB425E96DE2316FD2E;3373.
  ) 
 Here is how much of TeX's memory you used:
- 9925 strings out of 467525
- 151736 string characters out of 5418983
- 581661 words of memory out of 5000000
- 38691 multiletter control sequences out of 15000+600000
+ 9950 strings out of 467525
+ 152426 string characters out of 5418983
+ 586299 words of memory out of 5000000
+ 38712 multiletter control sequences out of 15000+600000
  635714 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,9n,79p,371b,563s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,79p,465b,457s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -450,10 +446,10 @@ live/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texli
 ve/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texliv
 e/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive
 /2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on egfr_inverse_draft_v1.pdf (7 pages, 200784 bytes).
+Output written on egfr_inverse_draft_v1.pdf (8 pages, 1083833 bytes).
 PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 189 compressed objects within 2 object streams
- 43 named destinations out of 1000 (max. 500000)
- 137 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 396 PDF objects out of 1000 (max. 8388607)
+ 221 compressed objects within 3 object streams
+ 47 named destinations out of 1000 (max. 500000)
+ 147 words of extra memory for PDF output out of 10000 (max. 10000000)
 

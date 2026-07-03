@@ -7,9 +7,9 @@
 \usepackage{cite}
 \usepackage{authblk}
 
-\title{\textbf{AI-Driven Inverse Molecular Design for EGFR Inhibitors:\\
-Addressing Drug-Resistant T790M Mutation via Graph Neural Networks,\\
-Genetic Algorithms, and Pseudo-Labeling}}
+\title{\textbf{Data Scarcity in Mutant-Specific Drug Design:\\
+Graph Neural Networks, Pseudo-Labeling, \\
+and Inverse Design for Drug-Resistant EGFR T790M}}
 
 \author[1]{Ethan Im}
 \affil[1]{Independent Researcher, Computational Drug Discovery \& Molecular Machine Learning}
@@ -60,6 +60,42 @@ strategy for data-scarce mutant-specific drug design.
 AttentiveFP; genetic algorithm; pseudo-labeling; drug resistance; computational drug discovery
 
 %% ============================================================
+
+\begin{figure}[h]
+\centering
+\begin{verbatim}
+ChEMBL Data (17,623 WT / 1,941 T790M)
+        |
+        v
+  SMILES Standardization + Deduplication
+        |
+        v
+  Molecular Graph Construction (RDKit)
+  [Node: 7-dim | Edge: 3-dim]
+        |
+        v
+  AttentiveFP GNN Training
+  [WT: R=0.736 | T790M: R=0.400]
+        |
+  Pseudo-Labeling (w=0.3)
+        |
+  T790M+Pseudo: R=0.698
+        |
+        v
+  Genetic Algorithm Inverse Design
+  [pop=100, gen=50, SA<=4, QED>=0.4]
+        |
+        v
+  Novel Candidates
+  [WT: 16 candidates | T790M: 13 candidates]
+        |
+        v
+  ADMET Screening + AutoDock Vina Validation
+\end{verbatim}
+\caption{Overview of the EGFR-Inverse pipeline.}
+\label{fig:pipeline}
+\end{figure}
+
 \section{Introduction}
 
 Epidermal growth factor receptor (EGFR) is one of the most clinically validated
@@ -189,6 +225,18 @@ The AttentiveFP GNN trained on 17,623 wild-type EGFR compounds achieved
 strong performance on the held-out test set:
 $R = 0.736$, $R^2 = 0.534$, RMSE $= 0.890$ pChEMBL units (Table~\ref{tab:model_comparison}).
 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/fig2_scatter.pdf}
+\caption{Predicted vs.\ actual pChEMBL values on the test set for three models.
+Left: wild-type EGFR (=0.736$, =1{,}763$).
+Center: T790M real-only (=0.400$, =195$).
+Right: T790M with pseudo-labeling (=0.698$, =195$).
+The sharp Pearson R recovery from pseudo-labeling is evident.}
+\label{fig:scatter}
+\end{figure}
+
 \subsection{T790M Data Scarcity and Performance Degradation}
 
 Extension to the L858R/T790M mutant with only 1,552 training samples resulted
@@ -230,27 +278,17 @@ in T790M candidates without explicit encoding --- consistent with the known
 covalent binding mechanism of third-generation EGFR-TKIs targeting Cys797.
 
 
-\subsection{ADMET Profiling}
 
-All 29 GA-generated candidates (16 WT-origin, 13 T790M-origin) were profiled
-across five ADMET endpoints using Random Forest models trained on TDC benchmarks:
-intestinal absorption (Caco-2), cardiac toxicity (hERG), liver toxicity (DILI),
-metabolic stability (CYP3A4 substrate), and blood-brain barrier penetration (BBB).
-Model validation performance was: Caco-2 MAE=0.361, hERG AUC=0.805,
-DILI AUC=0.869, CYP3A4 AUC=0.651, BBB AUC=0.867 on held-out test sets.
 
-No candidate passed all three primary safety filters simultaneously
-(Caco-2 $> -5.15$ log cm/s, hERG $< 0.5$, DILI $< 0.5$).
-All candidates showed elevated hERG (mean: 0.724) and DILI (mean: 0.721)
-risk scores, consistent with the known tendency of kinase inhibitor scaffolds
-to exhibit off-target interactions with cardiac ion channels and hepatic
-metabolic pathways. Caco-2 absorption predictions were in the moderate range
-(mean: 569XZilms4.877$ log cm/s), and BBB penetration was predicted as high
-for most candidates (mean: 0.731) --- which is undesirable for a lung cancer
-therapeutic. These results highlight the need for explicit multi-objective
-optimization incorporating ADMET constraints in future GA design, rather than
-post-hoc filtering of affinity-optimized candidates.
-
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_candidates.pdf}
+\caption{Representative GA-generated candidates. Left two columns: top-6 wild-type EGFR
+candidates (predicted pChEMBL $> 10.0$). Right two columns: top-6 T790M-targeted candidates
+featuring acrylamide warhead motifs (\texttt{C=CC(=O)N-}), consistent with known
+3rd-generation EGFR-TKI covalent binding mechanism.}
+\label{fig:candidates}
+\end{figure}
 
 \subsection{ADMET Profiling}
 
@@ -267,7 +305,7 @@ All candidates showed elevated hERG (mean: 0.724) and DILI (mean: 0.721)
 risk scores, consistent with the known tendency of kinase inhibitor scaffolds
 to exhibit off-target interactions with cardiac ion channels and hepatic
 metabolic pathways. Caco-2 absorption predictions were in the moderate range
-(mean: 569XZilms4.877$ log cm/s), and BBB penetration was predicted as high
+(mean: $-4.877$ log cm/s), and BBB penetration was predicted as high
 for most candidates (mean: 0.731) --- which is undesirable for a lung cancer
 therapeutic. These results highlight the need for explicit multi-objective
 optimization incorporating ADMET constraints in future GA design, rather than
