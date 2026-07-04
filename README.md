@@ -1,177 +1,302 @@
+<div align="center">
+
 # EGFR-Inverse
 
-> **Data Scarcity in Mutant-Specific Drug Design:**
-> Graph Neural Networks, Pseudo-Labeling, and Inverse Design for Drug-Resistant EGFR T790M
+### Data Scarcity in Mutant-Specific Drug Design
+### Graph Neural Networks, Pseudo-Labeling, and Inverse Design for Drug-Resistant EGFR T790M
+
+End-to-end molecular AI pipeline for mutant-specific drug discovery using
+Graph Neural Networks, semi-supervised learning, inverse molecular design,
+ADMET prediction, and molecular docking.
+
+<br>
 
 [![Python](https://img.shields.io/badge/Python-3.10-blue)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.1-orange)](https://pytorch.org/)
-[![PyG](https://img.shields.io/badge/PyTorch_Geometric-2.x-red)](https://pyg.org/)
+[![PyTorch Geometric](https://img.shields.io/badge/PyTorch_Geometric-2.x-red)](https://pytorch-geometric.readthedocs.io/)
 [![RDKit](https://img.shields.io/badge/RDKit-2023-green)](https://www.rdkit.org/)
 [![ChEMBL](https://img.shields.io/badge/ChEMBL-CHEMBL203-purple)](https://www.ebi.ac.uk/chembl/)
-[![Demo](https://img.shields.io/badge/HF_Live_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
+[![Demo](https://img.shields.io/badge/HuggingFace-Live_Demo-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
+
+</div>
 
 ---
 
-## Overview
+# Overview
 
-EGFR-Inverse is an end-to-end AI pipeline for inverse molecular design targeting **wild-type EGFR** and the clinically prevalent **L858R/T790M drug-resistant mutant** — the most common mechanism of acquired resistance to first- and second-generation EGFR tyrosine kinase inhibitors.
+**EGFR-Inverse** is an end-to-end AI framework for inverse molecular design targeting both
 
-**Central research question:**
-> *Does data scarcity in mutant-specific bioactivity datasets degrade not just affinity prediction performance, but the reliability of AI-generated drug candidates — and can pseudo-labeling close this gap?*
+- Wild-type EGFR
+- Drug-resistant EGFR L858R/T790M
 
-This project is a direct extension of [Polyinverse](https://github.com/Ethan-Im/polyinverse), applying the same inverse design methodology from polymer materials science to drug discovery.
+using graph neural networks, pseudo-labeling, genetic algorithms, ADMET prediction, and molecular docking.
 
-ChEMBL Data → AttentiveFP GNN → Pseudo-Labeling (T790M) → Genetic Algorithm → Novel Candidates
-                                                                 → ADMET Screening
-                                                → AutoDock Vina
+The project investigates an important question in molecular machine learning:
+
+> **Can pseudo-labeling compensate for severe data scarcity in mutant-specific drug discovery?**
+
+This work extends the inverse design methodology developed in **Polyinverse**, adapting it from polymer materials science to computational drug discovery.
 
 ---
 
-## Key Results
+# Pipeline
 
-### Model Performance (Test Set)
+```text
+                ChEMBL Bioactivity Data
+                         │
+                         ▼
+               Molecular Graph Generation
+                         │
+                         ▼
+               AttentiveFP Graph Neural Network
+                │                     │
+                │                     │
+         Wild-type EGFR         T790M EGFR
+                │                     │
+                └─────Pseudo Labeling─┘
+                         │
+                         ▼
+                 Affinity Prediction
+                         │
+                         ▼
+                Genetic Algorithm Search
+                         │
+                         ▼
+              Novel Molecule Generation
+                         │
+            ┌────────────┴────────────┐
+            ▼                         ▼
+      ADMET Screening          AutoDock Vina
+            │                         │
+            └────────────┬────────────┘
+                         ▼
+               Final Drug Candidates
+```
 
-| Model | Train n | RMSE | R | R² |
-|-------|---------|------|---|-----|
+---
+
+# Research Question
+
+The EGFR T790M mutation is the dominant mechanism of acquired resistance against first- and second-generation EGFR inhibitors.
+
+However, mutant-specific experimental datasets are dramatically smaller than wild-type datasets.
+
+This project studies:
+
+> **Does data scarcity reduce not only predictive performance, but also the reliability of AI-generated drug candidates?**
+
+and
+
+> **Can semi-supervised pseudo-labeling recover that performance?**
+
+---
+
+# Key Results
+
+## Prediction Performance
+
+| Model | Training Samples | RMSE | Pearson R | R² |
+|:------|-----------------:|------:|---------:|------:|
 | Wild-type EGFR | 14,098 | 0.890 | **0.736** | 0.534 |
-| T790M (real only) | 1,552 | 0.920 | 0.400 | 0.155 |
-| **T790M (+pseudo-labeling)** | 13,900 | **0.717** | **0.698** | 0.487 |
+| T790M (Real only) | 1,552 | 0.920 | 0.400 | 0.155 |
+| **T790M + Pseudo-labeling** | **13,900** | **0.717** | **0.698** | **0.487** |
 
-**Finding:** Data scarcity (9× fewer T790M samples) degraded model reliability from R=0.74 to R=0.40. PI1M-style pseudo-labeling with 12,348 wild-type compounds (loss weight=0.3) recovered performance to R=0.70.
+### Main Finding
 
-### Inverse Design
+Using only mutant-specific experimental data reduced predictive correlation
 
-| Candidate set | n | Predicted pChEMBL | Drug-likeness |
-|---|---|---|---|
-| Wild-type GA candidates | 16 | > 10.0 | SA ≤ 4.0, QED ≥ 0.4, Lipinski ✅ |
-| T790M GA candidates | 13 | 6.75–7.45 | SA ≤ 4.0, QED ≥ 0.4, Lipinski ✅ |
+**0.736 → 0.400**
 
-**Notable finding:** Acrylamide warhead motifs (`C=CC(=O)N-`) emerged spontaneously in T790M candidates — consistent with the known covalent binding mechanism of 3rd-generation EGFR-TKIs (e.g. osimertinib).
+After pseudo-labeling,
 
-### Docking Validation (AutoDock Vina)
+**0.400 → 0.698**
 
-| Candidate origin | Native receptor | Cross receptor | Note |
-|---|---|---|---|
-| WT candidates (n=5) | -7.99 kcal/mol (WT) | -7.90 kcal/mol (T790M) | Weakly WT-selective |
-| T790M candidates (n=5) | -8.08 kcal/mol (T790M) | -8.78 kcal/mol (WT) | Not T790M-selective† |
-
-†Cross-docking revealed T790M candidates do not show non-covalent selectivity — attributed to AutoDock Vina's inability to model covalent warhead binding (Cys797). This highlights a validation gap for AI-driven covalent inhibitor design.
-
-### ADMET Profiling (TDC Benchmarks)
-
-All 29 candidates screened across 5 endpoints (Caco-2, hERG, DILI, CYP3A4, BBB) using Random Forest models (hERG AUC=0.805, DILI AUC=0.869, BBB AUC=0.867). No candidate passed all primary safety filters — consistent with known kinase inhibitor scaffold hERG/DILI liability. Results motivate multi-objective GA design incorporating ADMET constraints.
+recovering nearly all lost performance.
 
 ---
 
-## Research Notes
+# Inverse Molecular Design
 
-Detailed reasoning, hypotheses, and negative results documented in [`research_notes/`](research_notes/):
+Genetic Algorithm optimization generated
 
-| Note | Topic |
-|------|-------|
-| [01](research_notes/01_wt_vs_t790m_comparison.md) | Wild-type vs T790M model comparison |
-| [02](research_notes/02_ga_wt_vs_t790m.md) | GA inverse design: covalent warhead emergence |
-| [03](research_notes/03_pseudo_labeling_t790m.md) | Pseudo-labeling recovers T790M performance |
-| [04](research_notes/04_docking_validation.md) | AutoDock Vina docking validation |
-| [05](research_notes/05_cross_docking_covalent_limitation.md) | Cross-docking reveals non-covalent scoring limitations |
+| Target | Candidates |
+|---------|-----------|
+| Wild-type EGFR | 16 |
+| EGFR T790M | 13 |
 
----
+All generated molecules satisfied
 
-## Pipeline
+- Lipinski Rule of Five
+- SA Score ≤ 4
+- QED ≥ 0.4
 
-### Phase 1 — Data Collection ✅
-- Source: ChEMBL (CHEMBL203), IC50/Ki, pChEMBL values
-- Wild-type: 20,039 raw → 17,623 processed
-- T790M: 4,991 records → 1,941 unique (L858R/T790M double mutant)
+Interestingly, several T790M molecules spontaneously evolved the classical
 
-### Phase 2 — AttentiveFP GNN ✅
-- 7-dim node features, 3-dim edge features
-- 100 epochs, Adam + ReduceLROnPlateau
-- Wild-type: Test R=0.736 | T790M (+pseudo): Test R=0.698
+```
+C=CC(=O)N
+```
 
-### Phase 3 — Pseudo-Labeling ✅
-- 12,348 wild-type compounds pseudo-labeled by T790M model
-- Weighted MSE loss (real=1.0, pseudo=0.3)
-- R recovered from 0.40 → 0.70
+acrylamide warhead,
 
-### Phase 4 — GA Inverse Design ✅
-- Population=100, Generations=50
-- Filters: SA Score ≤ 4.0, QED ≥ 0.4, Lipinski Rule of Five
-- 16 WT + 13 T790M candidates generated
-
-### Phase 5 — Validation ✅
-- ADMET: TDC benchmarks, Random Forest (5 endpoints)
-- Docking: AutoDock Vina v1.2.7 (PDB: 4WKQ, 3UG2)
-- Cross-docking: full 2×2 matrix (exhaustiveness=8, 32)
-
-### Phase 6 — Demo & Paper ✅
-- Live demo: [HF Spaces](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
-- Technical report: [`paper/egfr_inverse_draft_v1.pdf`](paper/egfr_inverse_draft_v1.pdf)
+which is the same covalent motif employed by third-generation EGFR inhibitors such as **Osimertinib**.
 
 ---
 
-## Project Structure
+# Docking Validation
 
-EGFR-Inverse/
-├── data/
-│   ├── raw/                        # ChEMBL raw data
-│   └── processed/                  # train/val/test splits (WT + T790M)
-├── src/
-│   ├── data_collection.py          # ChEMBL API query
-│   ├── dataset.py                  # SMILES to PyG graph
-│   ├── model.py                    # AttentiveFP GNN
-│   ├── train.py                    # Wild-type training
-│   ├── train_t790m.py              # T790M training
-│   ├── train_t790m_pseudo.py       # Pseudo-labeling training
-│   ├── ga_inverse_design.py        # GA (wild-type)
-│   ├── ga_inverse_design_t790m.py  # GA (T790M)
-│   ├── admet_screening.py          # TDC ADMET profiling
-│   ├── run_docking.py              # AutoDock Vina
-│   └── run_cross_docking.py        # Cross-docking
-├── docking/                        # Receptor/ligand structures + results
-├── models/                         # Model checkpoints
-├── results/                        # GA candidates, docking scores, ADMET
-├── research_notes/                 # Versioned research notes (01-05)
-├── paper/                          # LaTeX manuscript + figures
-├── app_api.py                      # FastAPI web demo
+AutoDock Vina validation was performed using
+
+| Structure | PDB |
+|-----------|------|
+| Wild-type EGFR | 4WKQ |
+| EGFR T790M | 3UG2 |
+
+Cross-docking revealed
+
+- WT candidates favored WT receptor
+- T790M candidates were **not selectively favored** by T790M
+
+This is expected because AutoDock Vina models only non-covalent interactions and cannot evaluate covalent bond formation with **Cys797**.
+
+---
+
+# ADMET Screening
+
+29 generated molecules were evaluated on five pharmacological endpoints.
+
+Benchmarks
+
+- Caco-2
+- BBB
+- CYP3A4
+- hERG
+- DILI
+
+Random Forest models achieved
+
+| Endpoint | Performance |
+|----------|-------------|
+| hERG | AUC = 0.805 |
+| BBB | AUC = 0.867 |
+| DILI | AUC = 0.869 |
+
+No molecule passed every safety filter,
+
+highlighting the importance of future **multi-objective inverse design** incorporating ADMET optimization.
+
+---
+
+# Project Structure
+
+```text
+EGFR-Inverse
+│
+├── data
+│   ├── raw
+│   └── processed
+│
+├── src
+│   ├── data_collection.py
+│   ├── dataset.py
+│   ├── model.py
+│   ├── train.py
+│   ├── train_t790m.py
+│   ├── train_t790m_pseudo.py
+│   ├── ga_inverse_design.py
+│   ├── ga_inverse_design_t790m.py
+│   ├── admet_screening.py
+│   ├── run_docking.py
+│   └── run_cross_docking.py
+│
+├── models
+├── docking
+├── results
+├── research_notes
+├── paper
+├── app_api.py
 └── README.md
+```
 
 ---
 
-## Quick Start
+# Quick Start
 
 ```bash
 git clone https://github.com/Ethan-Im/EGFR-Inverse.git
-cd EGFR-Inverse
-conda create -n egfr-inverse python=3.10 -y
-conda activate egfr-inverse
-pip install torch torch-geometric rdkit pandas scipy fastapi uvicorn meeko
 
-# Run demo locally
+cd EGFR-Inverse
+
+conda create -n egfr-inverse python=3.10 -y
+
+conda activate egfr-inverse
+
+pip install \
+torch \
+torch-geometric \
+rdkit \
+pandas \
+scipy \
+fastapi \
+uvicorn \
+meeko
+```
+
+Run the API
+
+```bash
 uvicorn app_api:app --host 0.0.0.0 --port 8080
 ```
 
 ---
 
-## Related Projects
+# Research Notes
+
+| Note | Description |
+|------|-------------|
+| 01 | Wild-type vs T790M comparison |
+| 02 | Genetic Algorithm inverse design |
+| 03 | Pseudo-labeling experiments |
+| 04 | Docking validation |
+| 05 | Cross-docking limitations |
+
+---
+
+# Related Projects
 
 | Project | Description |
 |---------|-------------|
-| [Polyinverse](https://github.com/Ethan-Im/polyinverse) | GNN-based polymer property prediction & inverse design (PI1M pseudo-labeling) |
-| [Battery-AI](https://github.com/Ethan-Im/Battery-Ai) | Ionic conductivity prediction for solid-state electrolytes |
+| Polyinverse | Polymer inverse design with PI1M pseudo-labeling |
+| Battery-AI | Solid-state electrolyte property prediction |
 
 ---
 
-## Citation
-Im, E. (2026). Data Scarcity in Mutant-Specific Drug Design:
-Graph Neural Networks, Pseudo-Labeling, and Inverse Design
-for Drug-Resistant EGFR T790M. Technical Report.
+# Citation
+
+```text
+Im, E. (2026).
+
+Data Scarcity in Mutant-Specific Drug Design:
+Graph Neural Networks,
+Pseudo-Labeling,
+and Inverse Design
+for Drug-Resistant EGFR T790M.
+
+Technical Report.
+```
 
 ---
 
-## Author
+# Author
 
-**Ethan Im** — Independent AI researcher, computational drug discovery & molecular machine learning.
+**Ethan Im**
 
-[![GitHub](https://img.shields.io/badge/GitHub-Ethan--Im-black)](https://github.com/Ethan-Im)
-[![HuggingFace](https://img.shields.io/badge/HF_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
+Independent AI Researcher
+
+Computational Drug Discovery
+
+Molecular Machine Learning
+
+- GitHub: https://github.com/Ethan-Im
+- HuggingFace: https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse
+
+---
