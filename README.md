@@ -8,7 +8,7 @@
 [![PyG](https://img.shields.io/badge/PyTorch_Geometric-2.x-red)](https://pyg.org/)
 [![RDKit](https://img.shields.io/badge/RDKit-2023-green)](https://www.rdkit.org/)
 [![ChEMBL](https://img.shields.io/badge/ChEMBL-CHEMBL203-purple)](https://www.ebi.ac.uk/chembl/)
-[![Demo](https://img.shields.io/badge/🤗_Live_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
+[![Demo](https://img.shields.io/badge/HF_Live_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
 
 ---
 
@@ -19,9 +19,13 @@ EGFR-Inverse is an end-to-end AI pipeline for inverse molecular design targeting
 **Central research question:**
 > *Does data scarcity in mutant-specific bioactivity datasets degrade not just affinity prediction performance, but the reliability of AI-generated drug candidates — and can pseudo-labeling close this gap?*
 
-This project is a direct extension of [Polyinverse](https://github.com/Ethan-Im/polyinverse), applying the same inverse design methodology from polymer materials science to drug discovery.ChEMBL Data → AttentiveFP GNN → Pseudo-Labeling (T790M) → Genetic Algorithm → Novel Candidates
-→ ADMET Screening
-→ AutoDock Vina---
+This project is a direct extension of [Polyinverse](https://github.com/Ethan-Im/polyinverse), applying the same inverse design methodology from polymer materials science to drug discovery.
+
+ChEMBL Data → AttentiveFP GNN → Pseudo-Labeling (T790M) → Genetic Algorithm → Novel Candidates
+                                                                 → ADMET Screening
+                                                → AutoDock Vina
+
+---
 
 ## Key Results
 
@@ -98,7 +102,7 @@ Detailed reasoning, hypotheses, and negative results documented in [`research_no
 ### Phase 5 — Validation ✅
 - ADMET: TDC benchmarks, Random Forest (5 endpoints)
 - Docking: AutoDock Vina v1.2.7 (PDB: 4WKQ, 3UG2)
-- Cross-docking: full 2×2 matrix (exhaustiveness=8,32)
+- Cross-docking: full 2×2 matrix (exhaustiveness=8, 32)
 
 ### Phase 6 — Demo & Paper ✅
 - Live demo: [HF Spaces](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
@@ -106,13 +110,15 @@ Detailed reasoning, hypotheses, and negative results documented in [`research_no
 
 ---
 
-## Project StructureEGFR-Inverse/
+## Project Structure
+
+EGFR-Inverse/
 ├── data/
 │   ├── raw/                        # ChEMBL raw data
 │   └── processed/                  # train/val/test splits (WT + T790M)
 ├── src/
 │   ├── data_collection.py          # ChEMBL API query
-│   ├── dataset.py                  # SMILES → PyG graph
+│   ├── dataset.py                  # SMILES to PyG graph
 │   ├── model.py                    # AttentiveFP GNN
 │   ├── train.py                    # Wild-type training
 │   ├── train_t790m.py              # T790M training
@@ -125,10 +131,12 @@ Detailed reasoning, hypotheses, and negative results documented in [`research_no
 ├── docking/                        # Receptor/ligand structures + results
 ├── models/                         # Model checkpoints
 ├── results/                        # GA candidates, docking scores, ADMET
-├── research_notes/                 # Versioned research notes (01–05)
+├── research_notes/                 # Versioned research notes (01-05)
 ├── paper/                          # LaTeX manuscript + figures
 ├── app_api.py                      # FastAPI web demo
-└── README.md---
+└── README.md
+
+---
 
 ## Quick Start
 
@@ -154,13 +162,16 @@ uvicorn app_api:app --host 0.0.0.0 --port 8080
 
 ---
 
-## CitationIm, E. (2026). Data Scarcity in Mutant-Specific Drug Design:
+## Citation
+Im, E. (2026). Data Scarcity in Mutant-Specific Drug Design:
 Graph Neural Networks, Pseudo-Labeling, and Inverse Design
-for Drug-Resistant EGFR T790M. Technical Report.---
+for Drug-Resistant EGFR T790M. Technical Report.
+
+---
 
 ## Author
 
 **Ethan Im** — Independent AI researcher, computational drug discovery & molecular machine learning.
 
-[![GitHub](https://img.shields.io/badge/GitHub-Ethan--Im-black?logo=github)](https://github.com/Ethan-Im)
-[![HuggingFace](https://img.shields.io/badge/🤗_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
+[![GitHub](https://img.shields.io/badge/GitHub-Ethan--Im-black)](https://github.com/Ethan-Im)
+[![HuggingFace](https://img.shields.io/badge/HF_Demo-EGFR--Inverse-blue)](https://huggingface.co/spaces/Ethan-Im/EGFR-Inverse)
