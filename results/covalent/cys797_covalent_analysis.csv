@@ -1,0 +1,21 @@
+ID,SMILES,Has_Warhead,Warhead_Type,Cys797_SG_Distance (Å),Attack_Angle (deg),Electrophilicity_Index (omega),Covalent_Viability
+T790M_Cand_1,CN1CC2(C1)CN(c1cc3c(Nc4cccc(Cl...,False,None,3.16,116.1,3.61,Bioisostere Modelable
+T790M_Cand_2,CN1CC2(C1)CN(c1cc3c(Nc4cccc(Cl...,False,None,3.35,112.1,3.46,Bioisostere Modelable
+T790M_Cand_3,CCc1cc2ncnc(N(O)c3cccc(Cl)c3F)...,False,None,2.95,106.4,3.57,Bioisostere Modelable
+T790M_Cand_4,CNc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,3.38,111.4,3.48,Bioisostere Modelable
+T790M_Cand_5,CN1CC2(C1)CN(c1cc3c(Nc4cccc(Cl...,False,None,3.13,113.1,3.53,Bioisostere Modelable
+T790M_Cand_6,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,5.76,71.5,0.0,Non-Covalent Binding Only
+T790M_Cand_7,CN1CC2(C1)CN(c1cc3c(Nc4cccc(Cl...,False,None,7.44,83.4,0.0,Non-Covalent Binding Only
+T790M_Cand_8,COc1c(N2CC3(CN(C)C3)OC2=O)cc2c...,False,None,7.13,65.4,0.0,Non-Covalent Binding Only
+T790M_Cand_9,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,6.47,84.8,0.0,Non-Covalent Binding Only
+T790M_Cand_10,COc1c(N2CC3(CN(C)C3)OC2=O)cc2c...,False,None,8.19,69.1,0.0,Non-Covalent Binding Only
+T790M_Cand_11,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,5.81,77.9,0.0,Non-Covalent Binding Only
+T790M_Cand_12,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,5.29,87.9,0.0,Non-Covalent Binding Only
+T790M_Cand_13,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,5.43,87.7,0.0,Non-Covalent Binding Only
+T790M_Cand_14,COc1cc2ncnc(Nc3cccc(Cl)c3F)c2n...,False,None,7.33,76.5,0.0,Non-Covalent Binding Only
+T790M_Cand_15,COc1c(N2CC3(CN(C)C3)OC2=O)cc2c...,False,None,7.69,73.5,0.0,Non-Covalent Binding Only
+T790M_Cand_16,CN1CCC2(CC1)CN(c1cnc3ncnc(Nc4c...,False,None,7.91,66.8,0.0,Non-Covalent Binding Only
+T790M_Cand_17,CSc1cc2ncnc(Nc3cccc(Cl)c3F)c2c...,False,None,7.96,81.2,0.0,Non-Covalent Binding Only
+T790M_Cand_18,CCOc1cc2ncnc(Nc3cccc(Cl)c3F)c2...,False,None,5.44,87.7,0.0,Non-Covalent Binding Only
+T790M_Cand_19,CN1CCC2(CC1)CN(c1cnc3ncnc(Nc4c...,False,None,7.74,77.6,0.0,Non-Covalent Binding Only
+T790M_Cand_20,COc1c(N2CC3(CN(C)C3)OC2=O)cc2c...,False,None,5.89,85.7,0.0,Non-Covalent Binding Only
